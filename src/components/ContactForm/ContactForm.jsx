@@ -2,15 +2,15 @@ import { Notify } from 'notiflix/build/notiflix-notify-aio';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { addContact } from 'redux/contacts/slice';
 import { selectContacts } from 'redux/selectors';
 
 import css from './ContactForm.module.css';
 import container from '../../styles/Container.module.css';
+import { addContact } from 'redux/contacts/operations';
 
 function ContactForm() {
   const [name, setName] = useState('');
-  const [number, setNumber] = useState('');
+  const [phone, setPhone] = useState('');
 
   const contacts = useSelector(selectContacts);
   const dispatch = useDispatch();
@@ -21,8 +21,8 @@ function ContactForm() {
       case 'name':
         setName(value);
         break;
-      case 'number':
-        setNumber(value);
+      case 'phone':
+        setPhone(value);
         break;
       default:
         return;
@@ -41,16 +41,15 @@ function ContactForm() {
       return;
     }
 
-    dispatch(addContact({ name, number }));
+    dispatch(addContact({ name, phone }));
     setName('');
-    setNumber('');
+    setPhone('');
   }
 
   return (
     <div className={container.container}>
       <form className={css.form} onSubmit={handleSubmit}>
         <label className={css.label}>
-          {/* <p>Name</p> */}
           <input
             className={css.input}
             type="text"
@@ -64,14 +63,13 @@ function ContactForm() {
           />
         </label>
         <label className={css.label}>
-          {/* <p>Number</p> */}
           <input
             className={css.input}
             type="tel"
-            name="number"
+            name="phone"
             pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
             title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
-            value={number}
+            value={phone}
             onChange={handleChange}
             placeholder="phone number"
             required

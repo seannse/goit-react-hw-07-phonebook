@@ -1,39 +1,36 @@
 import { RiDeleteBinLine } from 'react-icons/ri';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { deleteContact } from 'redux/contacts/slice';
-import { selectContacts, selectFilter } from 'redux/selectors';
+import { selectFilteredContacts } from 'redux/selectors';
+import { removeContact } from 'redux/contacts/operations';
 
 import css from './ContactList.module.css';
 import container from '../../styles/Container.module.css';
 
 const ContactList = () => {
-  const filter = useSelector(selectFilter);
-  const contacts = useSelector(selectContacts);
   const dispatch = useDispatch();
+  const filteredContacts = useSelector(selectFilteredContacts);
 
-  function filteredContacts() {
-    return contacts.filter(contact =>
-      contact.name.toLowerCase().includes(filter.toLowerCase())
-    );
-  }
-
-  const contactArr = filteredContacts();
+  // function filteredContacts() {
+  //   return contacts.filter(contact =>
+  //     contact.name.toLowerCase().includes(filter.toLowerCase())
+  //   );
+  // }
 
   return (
     <div className={container.container}>
       <ol className={css.list}>
-        {contactArr.map(({ id, name, number }) => {
+        {filteredContacts.map(({ id, name, phone }) => {
           return (
             <li className={css.item} key={id}>
               <p>
-                {name}: {number}
+                {name}: {phone}
               </p>
 
               <button
                 className={css.button}
                 type="button"
-                onClick={() => dispatch(deleteContact(id))}
+                onClick={() => dispatch(removeContact(id))}
               >
                 <RiDeleteBinLine height="30px" width="30px" />
               </button>
